@@ -39,7 +39,7 @@ class Stock {
 
     @Override
     public String toString() {
-        return symbol + ": " + name + " -> $" + currentPrice + " (" + String.format("%.2f", change) + "%)";
+        return symbol + ": " + name + " -> $" + currentPrice + " (" + change + "%)";
     }
 }
 
@@ -119,17 +119,14 @@ public class StockTradingPlatform {
         stocks = new ArrayList<>();
         portfolio = new Portfolio();
 
-        // Initialize stocks with some sample data
         stocks.add(new Stock("AAPL", "Apple Inc.", 150.0, 2.5));
         stocks.add(new Stock("GOOG", "Alphabet Inc.", 2500.0, 1.2));
         stocks.add(new Stock("MSFT", "Microsoft Corporation", 200.0, 3.1));
     }
-    
+
     public void printMarketData() {
-        System.out.println("\tMarket Data");
-        System.out.println("\t-----------");
         for (Stock stock : stocks) {
-            System.out.println("\t" + stock);
+            System.out.println("\t\t" + stock);
         }
     }
 
@@ -149,80 +146,73 @@ public class StockTradingPlatform {
         }
     }
 
-    public void run() {
+    public static void main(String[] args) {
+        StockTradingPlatform platform = new StockTradingPlatform();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-			System.out.println("\t+--------------------------------------------------------------------+");
-			System.out.println("\t|\t\t\tSTOCK TRADING PLATFORM\t\t\t     |");
-			System.out.println("\t+--------------------------------------------------------------------+");
-			
+            System.out.println("\t+--------------------------------------------------------------------+");
+            System.out.println("\t|\t\t\tSTOCK TRADING PLATFORM\t\t\t     |");
+            System.out.println("\t+--------------------------------------------------------------------+");
+
             System.out.println("\t\t[1] View Market Data\t\t[2] Buy Stock\n\t\t[3] Sell Stock\t\t\t[4] Track Portfolio\n\t\t[5] Update Market Data\t\t[6] Exit");
-          
+
             System.out.print("\n\tChoose an option: ");
             int option = scanner.nextInt();
-            
+
             System.out.println("\n");
 
             switch (option) {
                 case 1:
-					System.out.println("\t+--------------------------------------------------------------------+");
-					System.out.println("\t|\t\t\t      MARKET DATA\t\t\t     |");
-					System.out.println("\t+--------------------------------------------------------------------+");
-                
-                    printMarketData();
+                    System.out.println("\t+--------------------------------------------------------------------+");
+                    System.out.println("\t|\t\t\t      MARKET DATA\t\t\t     |");
+                    System.out.println("\t+--------------------------------------------------------------------+");
+
+                    platform.printMarketData();
                     System.out.println("\n");
                     break;
                 case 2:
-					System.out.println("\t+--------------------------------------------------------------------+");
-					System.out.println("\t|\\t\t\t       BUY STOCK\t\t\t     |");
-					System.out.println("\t+--------------------------------------------------------------------+");
-                
+                    System.out.println("\t+--------------------------------------------------------------------+");
+                    System.out.println("\t|\t\t\t       BUY STOCK\t\t\t     |");
+                    System.out.println("\t+--------------------------------------------------------------------+");
+
                     System.out.print("\t\tEnter stock symbol: ");
                     String symbol = scanner.next();
-                    
-                    Stock stock = getStockBySymbol(symbol);
+
+                    Stock stock = platform.getStockBySymbol(symbol);
                     if (stock != null) {
                         System.out.print("\t\tEnter quantity: ");
                         int quantity = scanner.nextInt();
-                        portfolio.buyStock(stock, quantity);
+                        platform.portfolio.buyStock(stock, quantity);
                     } else {
                         System.out.println("\n\tStock not found!");
                     }
                     System.out.println("\n");
                     break;
                 case 3:
-					System.out.println("\t+--------------------------------------------------------------------+");
-					System.out.println("\t|\\t\t\t       SELL STOCK\t\t\t     |");
-					System.out.println("\t+--------------------------------------------------------------------+");
-                
+                    System.out.println("\t+--------------------------------------------------------------------+");
+                    System.out.println("\t|\t\t\t       SELL STOCK\t\t\t     |");
+                    System.out.println("\t+--------------------------------------------------------------------+");
+
                     System.out.print("\t\tEnter stock symbol: ");
                     symbol = scanner.next();
-                    
-                    stock = getStockBySymbol(symbol);
+
+                    stock = platform.getStockBySymbol(symbol);
                     if (stock != null) {
                         System.out.print("\t\tEnter quantity: ");
                         int quantity = scanner.nextInt();
-                        portfolio.sellStock(stock, quantity);
+                        platform.portfolio.sellStock(stock, quantity);
                     } else {
                         System.out.println("\n\tStock not found!");
                     }
                     System.out.println("\n");
                     break;
                 case 4:
-					System.out.println("\t+--------------------------------------------------------------------+");
-					System.out.println("\t|\t\t\t     TRACK PORTFOLIO\t\t\t     |");
-					System.out.println("\t+--------------------------------------------------------------------+");
-                
-                    portfolio.printPortfolio(stocks);
-                    System.out.println("\tPortfolio Value: $" + portfolio.getPortfolioValue(stocks) + "\n\n");
+                    platform.portfolio.printPortfolio(platform.stocks);
+                    System.out.println("\tPortfolio Value: $" + platform.portfolio.getPortfolioValue(platform.stocks) + "\n\n");
                     break;
                 case 5:
-					System.out.println("\t+--------------------------------------------------------------------+");
-					System.out.println("\t|\t\t\t  UPDATE MARKET DATA\t\t\t     |");
-					System.out.println("\t+--------------------------------------------------------------------+");
-                    
-                    updateMarketData();
+                    platform.updateMarketData();
                     System.out.println("\tMarket data updated.\n\n");
                     break;
                 case 6:
@@ -233,10 +223,5 @@ public class StockTradingPlatform {
                     System.out.println("\tInvalid option! Please try again.\n\n");
             }
         }
-    }
-
-    public static void main(String[] args) {
-        StockTradingPlatform platform = new StockTradingPlatform();
-        platform.run();
     }
 }
