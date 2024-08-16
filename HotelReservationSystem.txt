@@ -1,0 +1,110 @@
+public class HotelReservationSystem {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Hotel hotel = new Hotel();
+
+        while (true) {
+			System.out.println("\t+--------------------------------------------------------------------+");
+			System.out.println("\t|\t\t      HOTEL RESERVATION SYSTEM\t\t\t     |");
+			System.out.println("\t+--------------------------------------------------------------------+");
+			
+            System.out.println("\t\t[1] Search Available Rooms\t[2] Make Reservation\n\t\t[3] View Booking Details\t[4] Process Payment\n\t\t[5] Cancel Reservation\t\t[6] Exit");
+            
+            System.out.print("\n\tChoose an option: ");
+            int option = scanner.nextInt();
+            scanner.nextLine();
+            
+            System.out.println("\n");
+
+            switch (option) {
+                case 1:
+					System.out.println("\t+--------------------------------------------------------------------+");
+					System.out.println("\t|\			SEARCH AVAILABLE ROOMS		    |");
+					System.out.println("\t+--------------------------------------------------------------------+");
+					
+                    System.out.print("\t\tEnter room category (Single/Double/Suite): ");
+                    String category = scanner.nextLine();
+                    
+                    hotel.searchRooms(category);
+                    
+                    System.out.println("\n");
+                    break;
+                case 2:
+					System.out.println("\t+--------------------------------------------------------------------+");
+					System.out.println("\t|\			 MAKE RESERVATION		    |");
+					System.out.println("\t+--------------------------------------------------------------------+");
+                
+                    System.out.print("\t\tEnter room number to book: ");
+                    int roomNumber = scanner.nextInt();
+                    scanner.nextLine();
+                    
+                    System.out.print("\n\t\tEnter guest name: ");
+                    String guestName = scanner.nextLine();
+                    
+                    System.out.print("\t\tEnter check-in date (YYYY-MM-DD): ");
+                    String checkInStr = scanner.nextLine();
+                    
+                    System.out.print("\t\tEnter check-out date (YYYY-MM-DD): ");
+                    String checkOutStr = scanner.nextLine();
+                    
+                    try {
+                        LocalDate checkInDate = LocalDate.parse(checkInStr);
+                        LocalDate checkOutDate = LocalDate.parse(checkOutStr);
+                        hotel.makeReservation(roomNumber, guestName, checkInDate, checkOutDate);
+                    } catch (Exception e) {
+                        System.out.println("\n\tInvalid date format! Please use YYYY-MM-DD.");
+                    }
+                    
+                    System.out.println("\n");
+                    break;
+                case 3:
+					System.out.println("\t+--------------------------------------------------------------------+");
+					System.out.println("\t|\			VIEW BOOKING DETAILS		    |");
+					System.out.println("\t+--------------------------------------------------------------------+");
+                
+                    System.out.print("\t\tEnter booking ID to view: ");
+                    int bookingId = scanner.nextInt();
+                    scanner.nextLine();
+                    
+                    hotel.viewBookingDetails(bookingId);
+                    
+                    System.out.println("\n");
+                    break;
+                case 4:
+					System.out.println("\t+--------------------------------------------------------------------+");
+					System.out.println("\t|\			 PROCESS PAYMENT		    |");
+					System.out.println("\t+--------------------------------------------------------------------+");
+                
+                    System.out.print("\t\tEnter booking ID to process payment: ");
+                    bookingId = scanner.nextInt();
+                    scanner.nextLine();
+                    
+                    System.out.print("\t\tEnter payment method (Cash/Credit Card/Debit Card): ");
+                    String paymentMethod = scanner.nextLine();
+                    hotel.processPayment(bookingId, paymentMethod);
+                    
+                    System.out.println("\n");
+                    break;
+                case 5:
+                    System.out.println("\t+--------------------------------------------------------------------+");
+					System.out.println("\t|\		    CANCEL RESERVATION		    |");
+					System.out.println("\t+--------------------------------------------------------------------+");
+					
+                    System.out.print("\t\tEnter booking ID to cancel: ");
+                    bookingId = scanner.nextInt();
+                    scanner.nextLine();
+                    
+                    hotel.cancelReservation(bookingId);
+                    
+                    System.out.println("\n");
+                    break;
+                case 6:
+                    System.out.println("\tExiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("\tInvalid option! Please try again.");
+            }
+        }
+    }
+}
